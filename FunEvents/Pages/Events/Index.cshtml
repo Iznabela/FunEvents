@@ -16,15 +16,10 @@
     {
         <div class="accordion"><h3>@Html.DisplayFor(modelItem => item.Title)</h3></div>
         <div class="panel">
-            <p>@Html.DisplayFor(modelItem => item.OrganizerID)</p>
             <p>@Html.DisplayFor(modelItem => item.Description)</p>
-            <p>@Html.DisplayFor(modelItem => item.Place)</p>
-            <p>@Html.DisplayFor(modelItem => item.Address)</p>
-            <p>@Html.DisplayFor(modelItem => item.Date)</p>
-            <p>@Html.DisplayFor(modelItem => item.SpotsAvailable)</p>
-            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-            <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-            <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            <p>Place: @Html.DisplayFor(modelItem => item.Place)</p>
+            <p>Time: @Html.DisplayFor(modelItem => item.Date)</p>
+            <a asp-page="./Details" asp-route-id="@item.ID">Join</a>
         </div>
     }
 </div>

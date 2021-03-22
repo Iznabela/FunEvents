@@ -16,6 +16,6 @@ namespace FunEvents.Models
         public DateTime Date { get; set; }
         public int SpotsAvailable { get; set; }
 
-        public ICollection<Attendee> Attendees { get; set; }
+        public ICollection<AttendeeEvent> AttendeeEvents { get; set; }
     }
 }

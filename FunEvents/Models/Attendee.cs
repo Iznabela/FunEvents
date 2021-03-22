@@ -12,6 +12,6 @@ namespace FunEvents.Models
         public string Email { get; set; }
         public int PhoneNumber { get; set; }
 
-        public ICollection<Event> Events { get; set; } 
+        public ICollection<AttendeeEvent> AttendeeEvents { get; set; } 
     }
 }

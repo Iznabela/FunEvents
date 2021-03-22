@@ -19,7 +19,10 @@ namespace FunEvents.Pages.Events
             _context = context;
         }
 
+        [BindProperty]
         public Event Event { get; set; }
+        [BindProperty]
+        public Attendee Attendee { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -33,6 +36,19 @@ namespace FunEvents.Pages.Events
             if (Event == null)
             {
                 return NotFound();
+            }
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if(ModelState.IsValid)
+            {
+                Attendee = await _context.Attendees.FindAsync(1);
+                Event = await _context.Events.FindAsync(id);
+
+                _context.AttendeeEvents.Add(new AttendeeEvent() {Attendee=Attendee, Event=Event });
+                _context.SaveChanges();
             }
             return Page();
         }

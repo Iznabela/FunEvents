@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FunEvents.Data.Migrations
+namespace FunEvents.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210317165332_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210322143053_newMigration")]
+    partial class newMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,21 +21,6 @@ namespace FunEvents.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AttendeeEvent", b =>
-                {
-                    b.Property<int>("AttendeesID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventsID")
-                        .HasColumnType("int");
-
-                    b.HasKey("AttendeesID", "EventsID");
-
-                    b.HasIndex("EventsID");
-
-                    b.ToTable("AttendeeEvent");
-                });
-
             modelBuilder.Entity("FunEvents.Models.Attendee", b =>
                 {
                     b.Property<int>("ID")
@@ -43,18 +28,40 @@ namespace FunEvents.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ID");
 
                     b.ToTable("Attendee");
+                });
+
+            modelBuilder.Entity("FunEvents.Models.AttendeeEvent", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AttendeeID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EventID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AttendeeID");
+
+                    b.HasIndex("EventID");
+
+                    b.ToTable("AttendeeEvents");
                 });
 
             modelBuilder.Entity("FunEvents.Models.Event", b =>
@@ -87,7 +94,30 @@ namespace FunEvents.Data.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("OrganizerID");
+
                     b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("FunEvents.Models.Organizer", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Organizer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -290,17 +320,26 @@ namespace FunEvents.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AttendeeEvent", b =>
+            modelBuilder.Entity("FunEvents.Models.AttendeeEvent", b =>
                 {
-                    b.HasOne("FunEvents.Models.Attendee", null)
-                        .WithMany()
-                        .HasForeignKey("AttendeesID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("FunEvents.Models.Attendee", "Attendee")
+                        .WithMany("AttendeeEvents")
+                        .HasForeignKey("AttendeeID");
 
-                    b.HasOne("FunEvents.Models.Event", null)
-                        .WithMany()
-                        .HasForeignKey("EventsID")
+                    b.HasOne("FunEvents.Models.Event", "Event")
+                        .WithMany("AttendeeEvents")
+                        .HasForeignKey("EventID");
+
+                    b.Navigation("Attendee");
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("FunEvents.Models.Event", b =>
+                {
+                    b.HasOne("FunEvents.Models.Organizer", null)
+                        .WithMany("Events")
+                        .HasForeignKey("OrganizerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -354,6 +393,21 @@ namespace FunEvents.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FunEvents.Models.Attendee", b =>
+                {
+                    b.Navigation("AttendeeEvents");
+                });
+
+            modelBuilder.Entity("FunEvents.Models.Event", b =>
+                {
+                    b.Navigation("AttendeeEvents");
+                });
+
+            modelBuilder.Entity("FunEvents.Models.Organizer", b =>
+                {
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }
