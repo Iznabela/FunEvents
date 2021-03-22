@@ -7,6 +7,8 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Event Explorer is the place to find fun upcoming events and join them, click register or login to see what's out there!</p>
-    <button>Register</button>
-    <button>Login</button>
+    <form method="get">
+        <button type="submit" asp-page="Events/Index">Register</button>
+        <button type="submit" asp-page="Events/Index">Login</button>
+    </form>
 </div>
