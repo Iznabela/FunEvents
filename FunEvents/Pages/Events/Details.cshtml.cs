@@ -47,8 +47,13 @@ namespace FunEvents.Pages.Events
                 Attendee = await _context.Attendees.FindAsync(1);
                 Event = await _context.Events.FindAsync(id);
 
-                _context.AttendeeEvents.Add(new AttendeeEvent() {Attendee=Attendee, Event=Event });
+                AttendeeEvent attendeeEvent = new AttendeeEvent() { Attendee = Attendee, Event = Event };
+
+                _context.AttendeeEvents.Add(attendeeEvent);
                 _context.SaveChanges();
+
+                // TEST
+                 var eventList = _context.AttendeeEvents.Where(m => m.Attendee.ID == 1).ToList();
             }
             return Page();
         }
