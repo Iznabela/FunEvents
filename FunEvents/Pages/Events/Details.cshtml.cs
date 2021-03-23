@@ -12,17 +12,15 @@ namespace FunEvents.Pages.Events
 {
     public class DetailsModel : PageModel
     {
+        public Event Event { get; set; }
+
         private readonly FunEvents.Data.ApplicationDbContext _context;
+        private Attendee attendee = new Attendee();
 
         public DetailsModel(FunEvents.Data.ApplicationDbContext context)
         {
             _context = context;
         }
-
-        [BindProperty]
-        public Event Event { get; set; }
-        [BindProperty]
-        public Attendee Attendee { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -40,20 +38,14 @@ namespace FunEvents.Pages.Events
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public IActionResult OnPost(int? id)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Attendee = await _context.Attendees.FindAsync(1);
-                Event = await _context.Events.FindAsync(id);
+                attendee = _context.Attendees.Find(1);
+                attendee.Events = _context.Events.Where(e => e.ID == id).ToList();
 
-                AttendeeEvent attendeeEvent = new AttendeeEvent() { Attendee = Attendee, Event = Event };
-
-                _context.AttendeeEvents.Add(attendeeEvent);
                 _context.SaveChanges();
-
-                // TEST
-                 var eventList = _context.AttendeeEvents.Where(m => m.Attendee.ID == 1).ToList();
             }
             return Page();
         }

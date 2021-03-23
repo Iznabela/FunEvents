@@ -19,6 +19,21 @@ namespace FunEvents.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("AttendeeEvent", b =>
+                {
+                    b.Property<int>("AttendeesID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttendeesID", "EventsID");
+
+                    b.HasIndex("EventsID");
+
+                    b.ToTable("AttendeeEvent");
+                });
+
             modelBuilder.Entity("FunEvents.Models.Attendee", b =>
                 {
                     b.Property<int>("ID")
@@ -38,28 +53,6 @@ namespace FunEvents.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Attendee");
-                });
-
-            modelBuilder.Entity("FunEvents.Models.AttendeeEvent", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AttendeeID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EventID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AttendeeID");
-
-                    b.HasIndex("EventID");
-
-                    b.ToTable("AttendeeEvents");
                 });
 
             modelBuilder.Entity("FunEvents.Models.Event", b =>
@@ -318,19 +311,19 @@ namespace FunEvents.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FunEvents.Models.AttendeeEvent", b =>
+            modelBuilder.Entity("AttendeeEvent", b =>
                 {
-                    b.HasOne("FunEvents.Models.Attendee", "Attendee")
-                        .WithMany("AttendeeEvents")
-                        .HasForeignKey("AttendeeID");
+                    b.HasOne("FunEvents.Models.Attendee", null)
+                        .WithMany()
+                        .HasForeignKey("AttendeesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("FunEvents.Models.Event", "Event")
-                        .WithMany("AttendeeEvents")
-                        .HasForeignKey("EventID");
-
-                    b.Navigation("Attendee");
-
-                    b.Navigation("Event");
+                    b.HasOne("FunEvents.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FunEvents.Models.Event", b =>
@@ -391,16 +384,6 @@ namespace FunEvents.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FunEvents.Models.Attendee", b =>
-                {
-                    b.Navigation("AttendeeEvents");
-                });
-
-            modelBuilder.Entity("FunEvents.Models.Event", b =>
-                {
-                    b.Navigation("AttendeeEvents");
                 });
 
             modelBuilder.Entity("FunEvents.Models.Organizer", b =>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FunEvents.Migrations
 {
-    public partial class newMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -208,29 +208,27 @@ namespace FunEvents.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttendeeEvents",
+                name: "AttendeeEvent",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AttendeeID = table.Column<int>(type: "int", nullable: true),
-                    EventID = table.Column<int>(type: "int", nullable: true)
+                    AttendeesID = table.Column<int>(type: "int", nullable: false),
+                    EventsID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttendeeEvents", x => x.ID);
+                    table.PrimaryKey("PK_AttendeeEvent", x => new { x.AttendeesID, x.EventsID });
                     table.ForeignKey(
-                        name: "FK_AttendeeEvents_Attendee_AttendeeID",
-                        column: x => x.AttendeeID,
+                        name: "FK_AttendeeEvent_Attendee_AttendeesID",
+                        column: x => x.AttendeesID,
                         principalTable: "Attendee",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AttendeeEvents_Event_EventID",
-                        column: x => x.EventID,
+                        name: "FK_AttendeeEvent_Event_EventsID",
+                        column: x => x.EventsID,
                         principalTable: "Event",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -273,14 +271,9 @@ namespace FunEvents.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttendeeEvents_AttendeeID",
-                table: "AttendeeEvents",
-                column: "AttendeeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AttendeeEvents_EventID",
-                table: "AttendeeEvents",
-                column: "EventID");
+                name: "IX_AttendeeEvent_EventsID",
+                table: "AttendeeEvent",
+                column: "EventsID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Event_OrganizerID",
@@ -306,7 +299,7 @@ namespace FunEvents.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "AttendeeEvents");
+                name: "AttendeeEvent");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
