@@ -52,6 +52,7 @@ namespace FunEvents.Pages.Events
                 attendee.Events = await _context.Events.Where(e => e.ID == id).ToListAsync();
                 Event.SpotsAvailable = Event.SpotsAvailable - 1;
 
+                // Visa felmeddelande om eventet redan är joinat??
                 //foreach(var item in attendee.Events)
                 //{
                 //    if (item.ID == id)

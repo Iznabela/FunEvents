@@ -36,5 +36,9 @@ namespace FunEvents.Pages.MyEvents
             return Page();
         }
 
+        //public async Task<IActionResult> OnPostAsync(int? id)
+        //{
+        //    // TA BORT ATTENDEES EVENT
+        //}
     }
 }
