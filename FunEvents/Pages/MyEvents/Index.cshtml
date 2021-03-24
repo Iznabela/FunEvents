@@ -6,7 +6,7 @@
 }
 
 <h1>@Model.Attendee.Name</h1>
-<p>Your events are displayed here!</p>
+<p>The events you've joined are displayed here!</p>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -37,6 +37,11 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                <form method="post">
+                    <input type="submit" class="btn-outline-danger" value="Remove" />
+                </form>
             </td>
         </tr>
 }

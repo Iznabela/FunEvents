@@ -26,7 +26,7 @@ namespace FunEvents.Pages.MyEvents
             Attendee = await _context.Attendees
                 .Include(s => s.Events)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == 1);
+                .FirstOrDefaultAsync(m => m.ID == 5);
 
             if (Attendee == null)
             {
@@ -35,5 +35,6 @@ namespace FunEvents.Pages.MyEvents
 
             return Page();
         }
+
     }
 }

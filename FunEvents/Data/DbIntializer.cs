@@ -24,7 +24,9 @@ namespace FunEvents.Data
                 new Attendee{Name="Deg Degsson", Email="deg@deg.com", PhoneNumber=0746234411},
                 new Attendee{Name="Sol Solström", Email="solen@gmail.com", PhoneNumber=0798446699},
                 new Attendee{Name="Isabella Pettersson", Email="bells@gmail.com", PhoneNumber=0788332297},
-                new Attendee{Name="Kalle Blomnell", Email="kalles@hotmail.com", PhoneNumber=0711223355}
+                new Attendee{Name="Kalle Blomnell", Email="kalles@hotmail.com", PhoneNumber=0711223355},
+                new Attendee{Name="Nora Lindström", Email="nuren@gmail.com", PhoneNumber=0788995642},
+                new Attendee{Name="Ahmad Srahin", Email="ahmad@hotmail.com", PhoneNumber=0722511463}
             };
 
             context.Attendees.AddRange(attendees);

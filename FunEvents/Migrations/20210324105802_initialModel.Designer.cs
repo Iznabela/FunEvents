@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunEvents.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210323181742_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210324105802_initialModel")]
+    partial class initialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

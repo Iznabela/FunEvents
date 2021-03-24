@@ -19,7 +19,7 @@ namespace FunEvents.Pages.Events
             _context = context;
         }
 
-        public IList<Event> Events { get;set; }
+        public ICollection<Event> Events { get;set; }
 
         public async Task OnGetAsync()
         {
