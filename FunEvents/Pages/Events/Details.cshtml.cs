@@ -16,6 +16,8 @@ namespace FunEvents.Pages.Events
         public Event Event { get; set; }
         [BindProperty]
         public Attendee Attendee { get; set; }
+        [BindProperty]
+        public ICollection<Event> AttendeeEvents { get; set; }
 
         private readonly FunEvents.Data.ApplicationDbContext _context;
         private Attendee attendee = new Attendee();
@@ -50,17 +52,19 @@ namespace FunEvents.Pages.Events
                 Attendee = await _context.Attendees.FindAsync(5);
                 attendee = await _context.Attendees.FindAsync(5);
                 attendee.Events = await _context.Events.Where(e => e.ID == id).ToListAsync();
-                Event.SpotsAvailable = Event.SpotsAvailable - 1;
 
-                // Visa felmeddelande om eventet redan är joinat??
-                //foreach(var item in attendee.Events)
-                //{
-                //    if (item.ID == id)
-                //    {
-                //        return Page();
-                //    }
-                //}
-              
+                AttendeeEvents = await _context.Events.Where(e => e.Attendees.Contains(Attendee)).ToListAsync();
+                
+
+                // kolla om eventet redan är joinat av användare
+                foreach(var item in AttendeeEvents)
+                {
+                    if (item.ID == id)
+                    {
+                        return Page();
+                    }
+                }
+                Event.SpotsAvailable = Event.SpotsAvailable - 1;
                 _context.SaveChanges();   
             }
             return Page();
