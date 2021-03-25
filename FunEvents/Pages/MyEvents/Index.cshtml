@@ -24,23 +24,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Attendee.Events) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Place)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                <form method="post">
-                    <input type="submit" class="btn-outline-danger" value="Remove" />
-                </form>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Attendee.Events)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="submit" class="btn-outline-danger" value="Remove" asp-route-id="@item.ID" />
+                    </form>
+                </td>
+            </tr>
+        }
+
     </tbody>
 </table>
+
+@if (Request.Method == "POST")
+{
+    <p>You successfully removed an event!</p>
+}

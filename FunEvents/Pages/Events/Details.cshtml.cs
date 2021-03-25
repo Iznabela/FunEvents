@@ -48,9 +48,12 @@ namespace FunEvents.Pages.Events
             
             if (ModelState.IsValid)
             {
-                Event = await _context.Events.FindAsync(id);
-                Attendee = await _context.Attendees.FindAsync(5);
-                attendee = await _context.Attendees.FindAsync(5);
+                Event = await _context.Events
+                .Include(s => s.Attendees)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+                Attendee = await _context.Attendees.FindAsync(1);
+                attendee = await _context.Attendees.FindAsync(1);
                 attendee.Events = await _context.Events.Where(e => e.ID == id).ToListAsync();
 
                 AttendeeEvents = await _context.Events.Where(e => e.Attendees.Contains(Attendee)).ToListAsync();
@@ -65,7 +68,8 @@ namespace FunEvents.Pages.Events
                     }
                 }
                 Event.SpotsAvailable = Event.SpotsAvailable - 1;
-                _context.SaveChanges();   
+                Event.Attendees.Add(Attendee);
+                _context.SaveChanges();
             }
             return Page();
         }

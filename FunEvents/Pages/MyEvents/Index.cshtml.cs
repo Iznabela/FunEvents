@@ -18,7 +18,9 @@ namespace FunEvents.Pages.MyEvents
         {
             _context = context;
         }
-
+        [BindProperty]
+        public Event Event { get; set; }
+        [BindProperty]
         public Attendee Attendee { get;set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -26,7 +28,7 @@ namespace FunEvents.Pages.MyEvents
             Attendee = await _context.Attendees
                 .Include(s => s.Events)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == 5);
+                .FirstOrDefaultAsync(m => m.ID == 1);
 
             if (Attendee == null)
             {
@@ -36,9 +38,18 @@ namespace FunEvents.Pages.MyEvents
             return Page();
         }
 
-        //public async Task<IActionResult> OnPostAsync(int? id)
-        //{
-        //    // TA BORT ATTENDEES EVENT
-        //}
+        public async Task<IActionResult> OnPost(int? id)
+        {
+            Attendee = await _context.Attendees
+                .Include(s => s.Events)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == 1);
+
+            Event = await _context.Events.FindAsync(id);
+
+            // REMOVE ATTENDEEEVENT
+            _context.SaveChanges();
+            return Page();
+        }
     }
 }
