@@ -45,7 +45,12 @@ namespace FunEvents.Pages.MyEvents
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == 1);
 
-            Event = await _context.Events.FindAsync(id);
+            Event = await _context.Events
+                .Include(s => s.Attendees)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            Attendee.Events.Remove(Event);
 
             // REMOVE ATTENDEEEVENT
             _context.SaveChanges();
