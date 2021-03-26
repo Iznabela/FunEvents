@@ -20,7 +20,6 @@ namespace FunEvents.Pages.Events
         public ICollection<Event> AttendeeEvents { get; set; }
 
         private readonly FunEvents.Data.ApplicationDbContext _context;
-        private Attendee attendee = new Attendee();
 
         public DetailsModel(FunEvents.Data.ApplicationDbContext context)
         {
@@ -53,8 +52,7 @@ namespace FunEvents.Pages.Events
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
                 Attendee = await _context.Attendees.FindAsync(1);
-                attendee = await _context.Attendees.FindAsync(1);
-                attendee.Events = await _context.Events.Where(e => e.ID == id).ToListAsync();
+                Attendee.Events = await _context.Events.Where(e => e.ID == id).ToListAsync();
 
                 AttendeeEvents = await _context.Events.Where(e => e.Attendees.Contains(Attendee)).ToListAsync();
                 
